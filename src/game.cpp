@@ -7774,6 +7774,10 @@ void game::exam_vehicle(vehicle &veh, int examx, int examy, int cx, int cy)
         int diff = 1;
         if( vehint.sel_vpart_info != NULL ) {
             diff = vehint.sel_vpart_info->difficulty + 3;
+            if( vehint.sel_cmd != 'r' && vehint.sel_vpart_info->has_flag(VPFLAG_WHEEL) ) {
+                // Wheels are easy to install/remove, but harder to repair
+                diff = std::max( 1, vehint.sel_vpart_info->difficulty-5 );
+            }
         }
         int setup = (calendar::turn == veh.last_repair_turn ? 0 : 1);
         int setuptime = std::max( setup*3000, setup*6000 - skill*400 );
