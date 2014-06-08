@@ -562,6 +562,7 @@ public:
   void takeoff(int pos = INT_MIN); // Remove armor  'T'
   void reload(); // Reload a wielded gun/tool  'r'
   void reload(int pos);
+  void unload_first_box_or_bag();
   void unload(item& it); // Unload a gun/tool  'U'
   void unload(int pos = INT_MIN);
   void wield(int pos = INT_MIN); // Wield a weapon  'w'

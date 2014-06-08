@@ -85,6 +85,7 @@ class inventory
   std::vector<item>  remove_mission_items(int mission_id);
   item& find_item(int position);
   item& item_by_letter(char ch);
+  int item_first_food_container();
   item& item_by_type(itype_id type);
   item& item_or_container(itype_id type); // returns an item, or a container of it
 

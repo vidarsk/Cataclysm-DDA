@@ -1139,6 +1139,7 @@
     { "type":"keybinding", "name": "Select Unarmed Style", "category":"DEFAULTMODE", "id":"pick_style", "bindings":[ { "input_method":"keyboard", "key":"_" } ] },
     { "type":"keybinding", "name": "Reload Wielded Item", "category":"DEFAULTMODE", "id":"reload", "bindings":[ { "input_method":"keyboard", "key":"r" } ] },
     { "type":"keybinding", "name": "Unload or Empty Wielded Item", "category":"DEFAULTMODE", "id":"unload", "bindings":[ { "input_method":"keyboard", "key":"U" } ] },
+    { "type":"keybinding", "name": "Unload box or bag", "category":"DEFAULTMODE", "id":"unload_box_bag", "bindings":[ { "input_method":"keyboard", "key":"N" } ] },
     { "type":"keybinding", "name": "Throw Item", "category":"DEFAULTMODE", "id":"throw", "bindings":[ { "input_method":"keyboard", "key":"t" } ] },
     { "type":"keybinding", "name": "Fire Wielded Item", "category":"DEFAULTMODE", "id":"fire", "bindings":[ { "input_method":"keyboard", "key":"f" } ] },
     { "type":"keybinding", "name": "Toggle attack mode of Wielded Item", "category":"DEFAULTMODE", "id":"select_fire_mode", "bindings":[ { "input_method":"keyboard", "key":"F" } ] },

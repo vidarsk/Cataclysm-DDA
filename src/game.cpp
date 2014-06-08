@@ -2599,6 +2599,7 @@ input_context get_default_mode_input_context() {
     ctxt.register_action("wield");
     ctxt.register_action("pick_style");
     ctxt.register_action("reload");
+    ctxt.register_action("unload_box_bag");
     ctxt.register_action("unload");
     ctxt.register_action("throw");
     ctxt.register_action("fire");
@@ -3203,6 +3204,10 @@ bool game::handle_action()
 
   case ACTION_UNLOAD:
    unload(u.weapon);
+   break;
+
+  case ACTION_UNLOAD_BOX_BAG:
+   unload_first_box_or_bag();
    break;
 
   case ACTION_THROW:
@@ -10965,6 +10970,18 @@ void game::reload()
       add_msg(m_info, _("You're not wielding anything."));
     } else {
       reload(-1);
+    }
+}
+
+void game::unload_first_box_or_bag()
+{
+    item it = u.inv.remove_item( u.inv.item_first_food_container() );
+    if (!it.is_null())
+    {
+        unload(it);
+        u.i_add(it);
+    } else {
+        add_msg(m_info, _("No more boxes or bags to unload."));
     }
 }
 

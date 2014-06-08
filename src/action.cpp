@@ -186,6 +186,8 @@ std::string action_ident(action_id act)
         return "pick_style";
     case ACTION_RELOAD:
         return "reload";
+    case ACTION_UNLOAD_BOX_BAG:
+        return "unload_box_bag";
     case ACTION_UNLOAD:
         return "unload";
     case ACTION_THROW:
@@ -631,6 +633,7 @@ action_id handle_action_menu()
             REGISTER_ACTION(ACTION_READ);
             REGISTER_ACTION(ACTION_WIELD);
             REGISTER_ACTION(ACTION_UNLOAD);
+            REGISTER_ACTION(ACTION_UNLOAD_BOX_BAG);
         } else if(category == "debug") {
             REGISTER_ACTION(ACTION_DEBUG);
             if ((entry= &entries.back())) {
