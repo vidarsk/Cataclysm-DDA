@@ -896,8 +896,10 @@ item &inventory::item_by_letter(char ch)
 int inventory::item_first_food_container()
 {
     int i = 0;
-    for (invstack::iterator iter = items.begin(); iter != items.end(); ++iter) {
-        if (iter->front().is_food_container()) {
+    item it;
+    for( invstack::iterator iter = items.begin(); iter != items.end(); ++iter ) {
+        it = iter->front();
+        if( it.is_food_container() && !it.contents.empty() && !it.contents[0].is_drink() ) {
             return i;
         }
         i++;
