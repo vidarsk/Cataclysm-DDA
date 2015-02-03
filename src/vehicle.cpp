@@ -3413,50 +3413,42 @@ float get_collision_factor(float delta_v)
 
 void vehicle::calculate_air_resistance()
 {
-    // Calculate air resistance
     int t_form_drag = 0;
-    int t_skin_friction = 0;
+    int t_area;
+    int t_skin_friction;
     int t_downforce = 0;
-    const int max_obst = 13;
+    const int max_obst = 19;
     int obst[max_obst];
-    for (int o = 0; o < max_obst; o++)
-        obst[o] = 0;
+    memset( obst, 0, max_obst );
     std::vector<int> structure_indices = all_parts_at_location(part_location_structure);
-    t_skin_friction = structure_indices.size(); // Assume 1 skin friction per square
-    for (int i = 0; i < structure_indices.size(); i++)
-    {
+    t_area = structure_indices.size(); /* Total area of car ~= nr of structure parts */
+    t_skin_friction = t_area; /* Assume 1 skin friction per square */
+    for( auto &structure_indice : structure_indices ) {
         int p = structure_indices[i];
         int frame_size = part_with_feature(p, VPFLAG_OBSTACLE) ? 10 : 5;
-        int pos = parts[p].mount_dy + max_obst / 2;
-        if (pos < 0) {
-            pos = 0;
-        }
-        if (pos >= max_obst) {
-            pos = max_obst -1;
-        }
-        if (obst[pos] < frame_size) {
-            obst[pos] = frame_size;
-        }
+        int pos = min( max_obst-1, max( 0, parts[p].mount_dy + max_obst / 2 ) );
+        obst[pos] = max( obst[pos], frame_size );
     }
     int last_obst = 0;
-    for (int o = 0; o < max_obst; o++) {
-        t_form_drag += abs(obst[o]-last_obst); // Surface drag
-        if (obst[o] > last_obst)
-            t_downforce += 5; // Generate some downforce
+    for( int o = 0; o < max_obst; o++ ) {
+        t_form_drag += abs(obst[o]-last_obst); /* Surface drag */
+        if( obst[o] > last_obst ) {
+            t_downforce += 5; /* Generate some downforce */
+        }
         last_obst = obst[o];
     }
-    t_form_drag += last_obst; // Last tile -> empty space
-    // Some values with these calc. TODO: Add downforce settings to car parts, calc whole body
-    // Car type        t_form_drag   t_downforce    t_skin_friction
-    // Racecar body             10             5                  3
-    // Sports car               20            10                 20
-    // Flatbed truck            20            10                 30
-    // apc                      20             5                 59
-    // Aim for roughly these Cd * A values:
-    // http://en.wikipedia.org/wiki/Automobile_drag_coefficient
-    // http://www.rapid-racer.com/aerodynamics.php
-    // http://www.engineeringtoolbox.com/drag-coefficient-d_627.html
-    drag_coeff = (float(t_form_drag * t_skin_friction) + (t_skin_friction + 10) * (t_skin_friction + 10) + 500) / 3500; // Use i_skin_friction as area
+    t_form_drag += last_obst; /* Last tile -> empty space */
+    /* Some values with these calc. TODO: Add downforce settings to car parts, calc whole body
+       Car type        t_form_drag   t_downforce    t_skin_friction
+       Racecar body             10             5                  3
+       Sports car               20            10                 20
+       Flatbed truck            20            10                 30
+       apc                      20             5                 59
+       Aim for roughly these Cd * A values:
+       http://en.wikipedia.org/wiki/Automobile_drag_coefficient
+       http://www.rapid-racer.com/aerodynamics.php
+       http://www.engineeringtoolbox.com/drag-coefficient-d_627.html */
+    drag_coeff = (float(t_form_drag * t_area) + (t_skin_friction + 10) * (t_skin_friction + 10) + 500) / 3500;
     downforce = float(t_downforce) / 10;
 }
 
